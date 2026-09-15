@@ -79,7 +79,7 @@ export function CancelBookingButton({
             </DialogDescription>
           </DialogHeader>
           {message && <p role="alert" className="mx-6 rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm leading-5 text-destructive">{message}</p>}
-          <DialogFooter className="mt-3">
+          <DialogFooter className="mx-0 mb-0 mt-3 rounded-b-2xl px-6 pb-6">
             <Button type="button" variant="outline" disabled={pending} className="rounded-full" onClick={() => setOpen(false)}>Keep booking</Button>
             <Button type="button" disabled={pending} className="rounded-full bg-destructive text-white hover:bg-destructive/90" onClick={confirmCancellation}>
               {pending ? "Cancelling…" : "Yes, cancel booking"}

@@ -69,7 +69,14 @@ test("Student books a room and cancels it inside the allowed window", async ({ p
 
   await page.getByRole("link", { name: "View your booking" }).click();
   await expect(page.getByRole("heading", { name: "Your current booking" })).toBeVisible();
+  await page.setViewportSize({ width: 360, height: 800 });
   await page.getByRole("button", { name: "Cancel booking" }).click();
+  const cancelDialog = page.getByRole("dialog");
+  const dialogBox = await cancelDialog.boundingBox();
+  const footerBox = await cancelDialog.locator('[data-slot="dialog-footer"]').boundingBox();
+  if (!dialogBox || !footerBox) throw new Error("The cancellation dialog and footer should be visible.");
+  expect(footerBox.x).toBeGreaterThanOrEqual(dialogBox.x);
+  expect(footerBox.x + footerBox.width).toBeLessThanOrEqual(dialogBox.x + dialogBox.width);
   await page.getByRole("button", { name: "Yes, cancel booking" }).click();
   await expect(page.getByRole("heading", { name: "Your current booking" })).toHaveCount(0);
 });

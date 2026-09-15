@@ -324,7 +324,7 @@ export function BookingForm({
             <Summary label="People" value={(review?.attendee_count ?? attendeeCount) + ((review?.attendee_count ?? attendeeCount) === 1 ? " person" : " people")} />
           </div>
           {confirmationMessage && <p role="alert" className="mx-6 rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm leading-5 text-destructive sm:mx-7">{confirmationMessage}</p>}
-          <DialogFooter className="mt-2">
+          <DialogFooter className="mx-0 mb-0 mt-2 rounded-b-3xl px-6 pb-6 sm:px-7 sm:pb-7">
             <Button type="button" variant="outline" disabled={pending} className="rounded-full" onClick={() => handleConfirmationOpenChange(false)}>Go back</Button>
             <Button type="button" disabled={pending} className="rounded-full bg-forest text-paper hover:bg-forest/90" onClick={confirmBooking}>
               {pending && <LoaderCircle className="mr-2 animate-spin" size={15} />}
