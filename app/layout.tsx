@@ -5,10 +5,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Common Room · TTDev",
-    template: "%s · Common Room",
+    default: "TTDev · Chulalongkorn University",
+    template: "%s · TTDev",
   },
-  description: "Find a welcoming university meeting room and book your next study session.",
+  description: "Find and book meeting rooms at Chulalongkorn University.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

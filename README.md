@@ -1,6 +1,6 @@
-# TTDev · Common Room
+# TTDev · Common Room at Chulalongkorn University
 
-A university meeting-room booking demo for Students and Administrators. The interface uses Next.js App Router, Supabase Auth/Postgres, shadcn/ui, React Hook Form, Zod, and a small React Bits motion component. The visual direction is warm campus editorial: paper, ink, deep green, and restrained motion.
+A university meeting-room booking demo for Students and Administrators at Chulalongkorn University. The interface uses Next.js App Router, Supabase Auth/Postgres, shadcn/ui, React Hook Form, Zod, and a small React Bits motion component. The visual direction pairs white and soft pink surfaces with a deep rose accent and restrained motion.
 
 ## Local setup
 

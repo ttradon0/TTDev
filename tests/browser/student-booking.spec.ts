@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Route } from "@playwright/test";
 import { fromZonedTime } from "date-fns-tz";
 
 const password = process.env.DEMO_STUDENT_PASSWORD;
@@ -49,6 +49,21 @@ test("Student books a room and cancels it inside the allowed window", async ({ p
   await page.getByLabel("Number of people").fill("2");
   await page.getByRole("button", { name: "Review booking" }).click();
   await expect(page.getByRole("heading", { name: "Confirm your booking" })).toBeVisible();
+
+  const failServerAction = async (route: Route) => {
+    const request = route.request();
+    if (request.method() === "POST" && request.headers()["next-action"]) {
+      await route.abort("failed");
+      return;
+    }
+    await route.continue();
+  };
+  await page.route("**/*", failServerAction);
+  await page.getByRole("button", { name: "Confirm booking" }).click();
+  const confirmation = page.getByRole("dialog");
+  await expect(confirmation.getByRole("alert")).toContainText(/connection/i);
+  await expect(confirmation.getByRole("button", { name: "Confirm booking" })).toBeEnabled();
+  await page.unroute("**/*", failServerAction);
   await page.getByRole("button", { name: "Confirm booking" }).click();
   await expect(page.getByRole("heading", { name: "You’re all set." })).toBeVisible();
 

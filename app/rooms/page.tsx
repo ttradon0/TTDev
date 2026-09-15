@@ -22,29 +22,29 @@ export default async function RoomsPage() {
 
   return (
     <AppShell profile={user.profile}>
-      <section className="relative overflow-hidden rounded-[2rem] bg-forest px-7 py-10 text-paper sm:px-12 sm:py-14">
-        <div className="absolute -right-20 -top-24 size-80 rounded-full border border-white/10" />
-        <div className="absolute right-16 top-10 hidden h-64 w-px rotate-45 bg-white/10 sm:block" />
+      <section className="relative overflow-hidden rounded-[2rem] border border-rose-soft bg-cream px-7 py-10 text-ink sm:px-12 sm:py-14">
+        <div className="absolute -right-20 -top-24 size-80 rounded-full border border-forest/10" />
+        <div className="absolute right-16 top-10 hidden h-64 w-px rotate-45 bg-forest/10 sm:block" />
         <div className="relative z-10 max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sage">Campus spaces · Bangkok</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-forest">Chulalongkorn University · Bangkok</p>
           <h1 className="mt-4 max-w-xl font-heading text-4xl leading-[1.04] tracking-[-0.04em] sm:text-6xl">
             A good place changes the conversation.
           </h1>
-          <p className="mt-5 max-w-lg text-sm leading-6 text-paper/70 sm:text-base">
+          <p className="mt-5 max-w-lg text-sm leading-6 text-muted-foreground sm:text-base">
             Find a room that fits your group. Choose a half-hour slot, bring your notes, and get into it.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3 text-xs text-paper/75">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-2"><Clock3 size={14} /> 06:00–18:00</span>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-2"><CalendarClock size={14} /> Book up to 24 hours ahead</span>
+          <div className="mt-8 flex flex-wrap gap-3 text-xs text-ink/75">
+            <span className="inline-flex items-center gap-2 rounded-full border border-forest/15 bg-white/70 px-3 py-2"><Clock3 size={14} className="text-forest" /> 06:00–18:00</span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-forest/15 bg-white/70 px-3 py-2"><CalendarClock size={14} className="text-forest" /> Book up to 24 hours ahead</span>
           </div>
         </div>
-        <div className="absolute bottom-5 right-8 hidden size-36 rotate-6 items-center justify-center rounded-[1.75rem] border border-white/15 bg-white/[0.04] sm:flex">
-          <DoorOpen size={44} strokeWidth={1.1} className="text-sage" aria-hidden="true" />
+        <div className="absolute bottom-5 right-8 hidden size-36 rotate-6 items-center justify-center rounded-[1.75rem] border border-forest/10 bg-white/60 sm:flex">
+          <DoorOpen size={44} strokeWidth={1.1} className="text-forest/60" aria-hidden="true" />
         </div>
       </section>
 
       {booking && (
-        <section aria-labelledby="current-booking-heading" className="mt-8 rounded-3xl border border-[#cbd5be] bg-[#eef1e7] p-5 sm:p-7">
+        <section aria-labelledby="current-booking-heading" className="mt-8 rounded-3xl border border-rose-soft bg-rose-pale p-5 sm:p-7">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div className="flex items-start gap-4">
               <div className="mt-0.5 flex size-11 shrink-0 items-center justify-center rounded-2xl bg-paper text-forest">
@@ -80,7 +80,7 @@ export default async function RoomsPage() {
         ) : (
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {rooms.map((room, index) => (
-              <article key={room.id} className="group relative overflow-hidden rounded-3xl border border-line bg-card p-6 transition duration-300 hover:-translate-y-1 hover:border-[#bbc9b1] hover:shadow-[0_18px_40px_-32px_rgba(24,63,52,0.48)]">
+              <article key={room.id} className="group relative overflow-hidden rounded-3xl border border-line bg-card p-6 transition duration-300 hover:-translate-y-1 hover:border-rose-soft hover:shadow-[0_18px_40px_-32px_rgba(143,36,75,0.22)]">
                 <div className="mb-8 flex items-start justify-between gap-3">
                   <div className="flex size-12 items-center justify-center rounded-2xl bg-cream text-forest">
                     <DoorOpen size={20} strokeWidth={1.6} aria-hidden="true" />

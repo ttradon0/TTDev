@@ -44,7 +44,7 @@ export function LoginForm() {
         </div>
         {errors.password && <p className="mt-1.5 text-xs text-destructive">{errors.password.message}</p>}
       </div>
-      {message && <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-800">{message}</p>}
+      {message && <p role="alert" className="rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">{message}</p>}
       <Button type="submit" disabled={pending} className="h-12 w-full rounded-full bg-forest text-paper hover:bg-forest/90">
         {pending ? "Opening your workspace…" : "Continue to Common Room"}
         {!pending && <ArrowRight className="ml-2" size={16} aria-hidden="true" />}

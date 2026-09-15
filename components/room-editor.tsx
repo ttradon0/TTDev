@@ -30,6 +30,7 @@ type RoomFormValues = {
 export function RoomEditor({ room }: { room?: Room }) {
   const router = useRouter();
   const [message, setMessage] = useState("");
+  const [removeMessage, setRemoveMessage] = useState("");
   const [removeOpen, setRemoveOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const { register, handleSubmit, formState: { errors } } = useForm<RoomFormValues>({
@@ -57,16 +58,22 @@ export function RoomEditor({ room }: { room?: Room }) {
   });
 
   function onRemove() {
-    if (!room) return;
-    setMessage("");
+    if (!room || pending) return;
+    setRemoveMessage("");
     startTransition(async () => {
-      const result = await removeRoom(room.id);
-      if (result.ok) {
-        setRemoveOpen(false);
-        router.refresh();
-      } else {
-        setMessage(result.message);
+      let result;
+      try {
+        result = await removeRoom(room.id);
+      } catch {
+        setRemoveMessage("We couldn’t remove this room. Check your connection and try again.");
+        return;
       }
+      if (!result.ok) {
+        setRemoveMessage(result.message);
+        return;
+      }
+      setRemoveOpen(false);
+      router.refresh();
     });
   }
 
@@ -91,7 +98,7 @@ export function RoomEditor({ room }: { room?: Room }) {
             <h3 className="mt-1 font-heading text-2xl">{room?.name ?? "New space"}</h3>
           </div>
           {room && !removed && <RoomStatus status={room.status} />}
-          {removed && <span className="rounded-full bg-[#eeeae0] px-3 py-1 text-xs text-muted-foreground">Removed · history kept</span>}
+          {removed && <span className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">Removed · history kept</span>}
         </div>
         <input type="hidden" {...register("id")} />
         <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_120px]">
@@ -123,19 +130,23 @@ export function RoomEditor({ room }: { room?: Room }) {
               {pending ? "Saving…" : room ? "Save changes" : "Add room"}
             </Button>
           )}
-          {room && !removed && <Button type="button" variant="ghost" onClick={() => setRemoveOpen(true)} className="ml-auto rounded-full text-muted-foreground hover:text-destructive">Remove room</Button>}
+          {room && !removed && <Button type="button" variant="ghost" disabled={pending} onClick={() => { setRemoveMessage(""); setRemoveOpen(true); }} className="ml-auto rounded-full text-muted-foreground hover:text-destructive">Remove room</Button>}
         </div>
       </form>
 
-      <Dialog open={removeOpen} onOpenChange={setRemoveOpen}>
+      <Dialog open={removeOpen} onOpenChange={(open) => { if (!open && pending) return; setRemoveOpen(open); }}>
         <DialogContent className="max-w-md rounded-2xl border-line bg-paper">
           <DialogHeader>
             <DialogTitle className="font-heading text-2xl">Remove {room?.name}?</DialogTitle>
             <DialogDescription>This room will disappear from Student booking. Existing booking history will stay available to admins.</DialogDescription>
           </DialogHeader>
+          {removeMessage && <p role="alert" className="mx-6 rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm leading-5 text-destructive">{removeMessage}</p>}
           <DialogFooter>
-            <Button type="button" variant="outline" className="rounded-full" onClick={() => setRemoveOpen(false)}>Keep room</Button>
-            <Button type="button" disabled={pending} className="rounded-full bg-destructive text-white hover:bg-destructive/90" onClick={onRemove}>{pending ? "Removing…" : "Remove room"}</Button>
+            <Button type="button" variant="outline" disabled={pending} className="rounded-full" onClick={() => setRemoveOpen(false)}>Keep room</Button>
+            <Button type="button" disabled={pending} className="rounded-full bg-destructive text-white hover:bg-destructive/90" onClick={onRemove}>
+              {pending && <LoaderCircle className="mr-2 animate-spin" size={15} aria-hidden="true" />}
+              {pending ? "Removing…" : "Remove room"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

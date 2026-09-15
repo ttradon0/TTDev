@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Route } from "@playwright/test";
 
 const password = process.env.DEMO_ADMIN_PASSWORD;
 
@@ -31,6 +31,20 @@ test("Admin searches bookings and manages a room", async ({ page }) => {
   await roomForm.getByRole("button", { name: "Remove room" }).click();
   const confirmation = page.getByRole("dialog");
   await expect(confirmation.getByText(/Existing booking history will stay available/)).toBeVisible();
+
+  const failServerAction = async (route: Route) => {
+    const request = route.request();
+    if (request.method() === "POST" && request.headers()["next-action"]) {
+      await route.abort("failed");
+      return;
+    }
+    await route.continue();
+  };
+  await page.route("**/*", failServerAction);
+  await confirmation.getByRole("button", { name: "Remove room" }).click();
+  await expect(confirmation.getByRole("alert")).toContainText(/connection/i);
+  await expect(confirmation.getByRole("button", { name: "Remove room" })).toBeEnabled();
+  await page.unroute("**/*", failServerAction);
   await confirmation.getByRole("button", { name: "Remove room" }).click();
   await expect(page.getByText("Room history")).toBeVisible();
   await expect(page.getByText(testName, { exact: true }).last()).toBeVisible();

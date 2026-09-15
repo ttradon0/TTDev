@@ -31,15 +31,15 @@ export default async function AdminDashboardPage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden rounded-[2rem] bg-forest px-7 py-9 text-paper sm:px-11 sm:py-12">
-        <div className="absolute -right-12 -top-28 size-80 rounded-full border border-white/10" />
+      <section className="relative overflow-hidden rounded-[2rem] border border-rose-soft bg-cream px-7 py-9 text-ink sm:px-11 sm:py-12">
+        <div className="absolute -right-12 -top-28 size-80 rounded-full border border-forest/10" />
         <div className="relative z-10 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sage">Administrator · Campus spaces</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-forest">Chulalongkorn University · Administrator</p>
             <h1 className="mt-3 font-heading text-4xl leading-tight tracking-[-0.035em] sm:text-5xl">A clearer view of campus.</h1>
-            <p className="mt-3 max-w-xl text-sm leading-6 text-paper/70">Today is {bangkokDateLabel(new Date())}. See room activity and keep the schedule moving.</p>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">Today is {bangkokDateLabel(new Date())}. See room activity and keep the schedule moving.</p>
           </div>
-          <Button asChild variant="secondary" className="w-fit rounded-full bg-paper text-forest hover:bg-sage">
+          <Button asChild variant="secondary" className="w-fit rounded-full bg-white text-forest hover:bg-rose-soft">
             <Link href="/admin/bookings">Explore bookings <ArrowRight className="ml-2" size={15} /></Link>
           </Button>
         </div>
@@ -101,7 +101,7 @@ export default async function AdminDashboardPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-xs text-muted-foreground">{formatRange(booking.starts_at, booking.ends_at)}</span>
-                    <span className={"rounded-full px-2.5 py-1 text-[10px] capitalize " + (booking.status === "confirmed" ? "bg-[#e7eddf] text-forest" : "bg-[#eeeae0] text-muted-foreground")}>{booking.status}</span>
+                    <span className={"rounded-full px-2.5 py-1 text-[10px] capitalize " + (booking.status === "confirmed" ? "bg-rose-soft text-rose-strong" : "bg-muted text-muted-foreground")}>{booking.status}</span>
                   </div>
                 </Link>
               ))}

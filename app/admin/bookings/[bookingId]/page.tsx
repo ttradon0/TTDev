@@ -21,14 +21,14 @@ export default async function AdminBookingDetailPage({ params }: { params: Promi
         <Link href="/admin/bookings"><ArrowLeft className="mr-2" size={15} /> Back to bookings</Link>
       </Button>
       <section className="overflow-hidden rounded-[2rem] border border-line bg-card">
-        <div className="bg-forest px-6 py-8 text-paper sm:px-9">
+        <div className="border-b border-rose-soft bg-rose-pale px-6 py-8 text-ink sm:px-9">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sage">Booking details</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-forest">Booking details</p>
               <h1 className="mt-2 font-heading text-4xl tracking-[-0.035em]">{booking.room_name_snapshot}</h1>
-              <p className="mt-2 text-sm text-paper/70">{booking.details?.meeting_name ?? "Meeting"}</p>
+              <p className="mt-2 text-sm text-muted-foreground">{booking.details?.meeting_name ?? "Meeting"}</p>
             </div>
-            <span className={"rounded-full px-3 py-1.5 text-xs capitalize " + (booking.status === "confirmed" ? "bg-sage text-forest" : "bg-white/15 text-paper")}>{booking.status}</span>
+            <span className={"rounded-full px-3 py-1.5 text-xs capitalize " + (booking.status === "confirmed" ? "bg-rose-soft text-rose-strong" : "bg-muted text-muted-foreground")}>{booking.status}</span>
           </div>
         </div>
         <div className="grid gap-8 p-6 sm:grid-cols-2 sm:p-9">

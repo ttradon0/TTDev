@@ -87,7 +87,7 @@ export default async function AdminBookingsPage({ searchParams }: { searchParams
                 <p className="text-sm">{bangkokDateLabel(booking.starts_at)}</p>
                 <p className="font-mono text-xs text-muted-foreground">{formatRange(booking.starts_at, booking.ends_at)}</p>
                 <span className="flex items-center gap-2">
-                  <span className={"rounded-full px-2.5 py-1 text-[10px] capitalize " + (booking.status === "confirmed" ? "bg-[#e7eddf] text-forest" : "bg-[#eeeae0] text-muted-foreground")}>{booking.status}</span>
+                  <span className={"rounded-full px-2.5 py-1 text-[10px] capitalize " + (booking.status === "confirmed" ? "bg-rose-soft text-rose-strong" : "bg-muted text-muted-foreground")}>{booking.status}</span>
                   <ArrowUpRight size={14} className="text-muted-foreground" aria-hidden="true" />
                 </span>
               </Link>

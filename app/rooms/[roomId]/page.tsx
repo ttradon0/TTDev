@@ -73,6 +73,7 @@ export default async function RoomBookingPage({ params, searchParams }: RoomPage
         </div>
       </section>
       <BookingForm
+        key={room.id + ":" + date}
         roomId={room.id}
         roomName={room.name}
         capacity={room.capacity}

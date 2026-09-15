@@ -60,6 +60,7 @@ export function BookingForm({
   const [review, setReview] = useState<BookingInput | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("");
+  const [confirmationMessage, setConfirmationMessage] = useState("");
   const [pending, startTransition] = useTransition();
   const {
     register,
@@ -104,20 +105,35 @@ export function BookingForm({
 
   function openConfirmation() {
     setMessage("");
+    setConfirmationMessage("");
     handleSubmit((values) => {
       setReview(values);
       setConfirmOpen(true);
     })();
   }
 
+  function handleConfirmationOpenChange(open: boolean) {
+    if (!open && pending) return;
+    if (!open && confirmationMessage) {
+      setMessage(confirmationMessage);
+      setConfirmationMessage("");
+    }
+    setConfirmOpen(open);
+  }
+
   function confirmBooking() {
-    if (!review) return;
-    setMessage("");
+    if (!review || pending) return;
+    setConfirmationMessage("");
     startTransition(async () => {
-      const result = await createBooking(review);
+      let result;
+      try {
+        result = await createBooking(review);
+      } catch {
+        setConfirmationMessage("We couldn’t save your booking. Check your connection and try again.");
+        return;
+      }
       if (!result.ok) {
-        setConfirmOpen(false);
-        setMessage(result.message);
+        setConfirmationMessage(result.message);
         return;
       }
       setConfirmOpen(false);
@@ -154,14 +170,14 @@ export function BookingForm({
         </div>
 
         <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[11px] text-muted-foreground" aria-label="Calendar legend">
-          <span className="inline-flex items-center gap-2"><span className="size-2 rounded-full bg-[#7b9c76]" /> Available</span>
-          <span className="inline-flex items-center gap-2"><span className="size-2 rounded-full bg-[#c57c59]" /> Booked</span>
+          <span className="inline-flex items-center gap-2"><span className="size-2 rounded-full bg-rose-soft" /> Available</span>
+          <span className="inline-flex items-center gap-2"><span className="size-2 rounded-full bg-rose-strong" /> Booked</span>
           <span className="inline-flex items-center gap-2"><span className="size-2 rounded-full bg-forest" /> Selected</span>
-          <span className="inline-flex items-center gap-2"><span className="size-2 rounded-full bg-[#cbc8be]" /> Unavailable</span>
+          <span className="inline-flex items-center gap-2"><span className="size-2 rounded-full bg-muted-foreground/50" /> Unavailable</span>
         </div>
 
         {(hasActiveBooking || maintenance) && (
-          <div role="status" className="mt-5 rounded-2xl border border-[#e5dfd1] bg-cream p-4 text-sm leading-6 text-ink/80">
+          <div role="status" className="mt-5 rounded-2xl border border-rose-soft bg-rose-pale p-4 text-sm leading-6 text-ink/80">
             {maintenance
               ? "This room is under maintenance. Its schedule remains visible, but bookings are disabled."
               : "You already have a booking at " + (activeRoomName ?? "another room") + ". You can book again after it ends or is cancelled."}
@@ -176,7 +192,7 @@ export function BookingForm({
             const label = blocked ? "Booked" : selected ? "Selected" : enabled ? "Available" : "Unavailable";
             const firstInHour = slot.time.endsWith(":00");
             return (
-              <div key={slot.time} className={"grid grid-cols-[72px_minmax(0,1fr)] border-b border-line last:border-b-0 sm:grid-cols-[94px_minmax(0,1fr)] " + (firstInHour ? "bg-[#f8f6ef]" : "")}>
+              <div key={slot.time} className={"grid grid-cols-[72px_minmax(0,1fr)] border-b border-line last:border-b-0 sm:grid-cols-[94px_minmax(0,1fr)] " + (firstInHour ? "bg-cream/50" : "")}>
                 <div className="flex items-center justify-end pr-3 sm:pr-5">
                   <time className={"font-mono text-xs " + (firstInHour ? "font-medium text-ink" : "text-muted-foreground")}>{slot.time}</time>
                 </div>
@@ -192,17 +208,17 @@ export function BookingForm({
                       (selected
                         ? "bg-forest font-medium text-paper"
                         : blocked
-                          ? "cursor-not-allowed bg-[#f3e7df] text-[#8b5945]"
+                          ? "cursor-not-allowed bg-rose-soft text-rose-strong"
                           : enabled
-                            ? "bg-[#eaf0e4] text-forest hover:bg-[#dbe6d2]"
-                            : "cursor-not-allowed bg-[#f1efe9] text-[#9b9a91]")
+                            ? "bg-rose-pale text-rose-strong hover:bg-rose-soft"
+                            : "cursor-not-allowed bg-muted text-muted-foreground")
                     }
                   >
                     <span className="inline-flex items-center gap-2">
-                      <span className={"size-1.5 rounded-full " + (selected ? "bg-sage" : blocked ? "bg-[#b87553]" : enabled ? "bg-[#74916d]" : "bg-[#c3c1b8]")} />
+                      <span className={"size-1.5 rounded-full " + (selected ? "bg-sage" : blocked ? "bg-rose-strong" : enabled ? "bg-forest/70" : "bg-muted-foreground/50")} />
                       {label}
                     </span>
-                    {slot.time === startTime && <span className="font-medium">{duration} min start</span>}
+                    {slot.time === startTime && <span className="font-medium">Start · {formatDuration(duration)}</span>}
                     {index === slots.length - 1 && <span className="sr-only">Bookings end at 18:00.</span>}
                   </button>
                 </div>
@@ -282,7 +298,7 @@ export function BookingForm({
                 {errors.attendee_count && <p className="mt-1.5 text-xs text-destructive">{errors.attendee_count.message}</p>}
               </div>
 
-              {message && <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm leading-5 text-red-800">{message}</p>}
+              {message && <p role="alert" className="rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm leading-5 text-destructive">{message}</p>}
               <Button type="submit" disabled={!startAllowed || !startTime} className="h-12 w-full rounded-full bg-forest text-paper hover:bg-forest/90 disabled:opacity-50">
                 Review booking <ArrowRight className="ml-2" size={16} aria-hidden="true" />
               </Button>
@@ -292,7 +308,7 @@ export function BookingForm({
         )}
       </aside>
 
-      <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+      <Dialog open={confirmOpen} onOpenChange={handleConfirmationOpenChange}>
         <DialogContent className="max-w-lg rounded-3xl border-line bg-paper p-0">
           <DialogHeader className="px-6 pt-6 sm:px-7 sm:pt-7">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-forest">One last look</p>
@@ -307,8 +323,9 @@ export function BookingForm({
             <Summary label="Duration" value={formatDuration(review?.duration_minutes ?? duration)} />
             <Summary label="People" value={(review?.attendee_count ?? attendeeCount) + ((review?.attendee_count ?? attendeeCount) === 1 ? " person" : " people")} />
           </div>
+          {confirmationMessage && <p role="alert" className="mx-6 rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm leading-5 text-destructive sm:mx-7">{confirmationMessage}</p>}
           <DialogFooter className="mt-2">
-            <Button type="button" variant="outline" className="rounded-full" onClick={() => setConfirmOpen(false)}>Go back</Button>
+            <Button type="button" variant="outline" disabled={pending} className="rounded-full" onClick={() => handleConfirmationOpenChange(false)}>Go back</Button>
             <Button type="button" disabled={pending} className="rounded-full bg-forest text-paper hover:bg-forest/90" onClick={confirmBooking}>
               {pending && <LoaderCircle className="mr-2 animate-spin" size={15} />}
               {pending ? "Saving…" : "Confirm booking"}
