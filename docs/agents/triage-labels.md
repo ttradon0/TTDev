@@ -1,0 +1,9 @@
+# Triage Labels
+
+| Skill role | GitHub label | Meaning |
+| --- | --- | --- |
+| `needs-triage` | `needs-triage` | Needs maintainer evaluation |
+| `needs-info` | `needs-info` | Waiting for reporter information |
+| `ready-for-agent` | `ready-for-agent` | Ready for an agent |
+| `ready-for-human` | `ready-for-human` | Requires a human |
+| `wontfix` | `wontfix` | Will not be actioned |

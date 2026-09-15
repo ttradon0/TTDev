@@ -1,0 +1,109 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-paper: #fbf9f2;
+  --color-cream: #f2eddf;
+  --color-forest: #183f34;
+  --color-ink: #202c27;
+  --color-sage: #c7d2b6;
+  --color-line: #e5dfd1;
+  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+  --font-heading: "Iowan Old Style", "Baskerville", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --radius-sm: calc(var(--radius) * 0.65);
+  --radius-md: calc(var(--radius) * 0.85);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.35);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+:root {
+  --background: #fbf9f2;
+  --foreground: #202c27;
+  --card: #fffdf8;
+  --card-foreground: #202c27;
+  --popover: #fffdf8;
+  --popover-foreground: #202c27;
+  --primary: #183f34;
+  --primary-foreground: #fbf9f2;
+  --secondary: #f2eddf;
+  --secondary-foreground: #26342e;
+  --muted: #f2efe6;
+  --muted-foreground: #73776e;
+  --accent: #e7eddf;
+  --accent-foreground: #183f34;
+  --destructive: #b44939;
+  --border: #e5dfd1;
+  --input: #e5dfd1;
+  --ring: #426e58;
+  --radius: 0.9rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: #c7d2b6;
+  color: #183f34;
+}
+
+:focus-visible {
+  outline: 2px solid #426e58;
+  outline-offset: 3px;
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.blur-text {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
